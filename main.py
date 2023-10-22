@@ -11,7 +11,8 @@ def print_db_version(db_config):
 
 
 if __name__ == '__main__':
-    print(os.listdir(os.environ["LD_LIBRARY_PATH"]))
+    print(f'LD_LIBRARY_PATH = {os.environ["LD_LIBRARY_PATH"]}')
+    print(f'{os.environ["LD_LIBRARY_PATH"]} content: \n{os.listdir(os.environ["LD_LIBRARY_PATH"])}')
 
     # Both calls below fail...
     # oracledb.init_oracle_client()
