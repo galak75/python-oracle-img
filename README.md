@@ -13,3 +13,6 @@ A docker image with python and oracle
 
 ## explore image content
 `docker run -it --entrypoint "" my-image bash`
+
+## Build and run in one single convenient command
+`./run.sh`
