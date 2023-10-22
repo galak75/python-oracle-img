@@ -1,11 +1,15 @@
 import os
 
-import oracledb
+import cx_Oracle
 
 
 def print_db_version(db_config):
-    params = oracledb.ConnectParams(host=db_config['host'], port=db_config['port'], service_name=db_config['name'])
-    with oracledb.connect(user=db_config['username'], password=db_config['password'], params=params) as conn:
+    with cx_Oracle.connect(
+        db_config['username'],
+        db_config['password'],
+        f"{db_config['host']}:{db_config['port']}/{db_config['name']}",
+        encoding='UTF-8'
+    ) as conn:
         print(f'Database version: {conn.version}')
         conn.close()
 
@@ -13,10 +17,6 @@ def print_db_version(db_config):
 if __name__ == '__main__':
     print(f'LD_LIBRARY_PATH = {os.environ["LD_LIBRARY_PATH"]}')
     print(f'{os.environ["LD_LIBRARY_PATH"]} content: \n{os.listdir(os.environ["LD_LIBRARY_PATH"])}')
-
-    # Both calls below fail...
-    # oracledb.init_oracle_client()
-    oracledb.init_oracle_client(os.environ['LD_LIBRARY_PATH'])
 
     db_config = {
         'host': os.environ['DB_HOST'],
