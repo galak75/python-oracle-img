@@ -10,7 +10,6 @@ def print_db_version(db_config):
         with conn.cursor() as cursor:
             cursor.execute('SELECT * FROM v$version')
             print(cursor.fetchall())
-        conn.close()
 
 
 if __name__ == '__main__':
