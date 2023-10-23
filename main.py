@@ -7,6 +7,9 @@ def print_db_version(db_config):
     params = oracledb.ConnectParams(host=db_config['host'], port=db_config['port'], service_name=db_config['name'])
     with oracledb.connect(user=db_config['username'], password=db_config['password'], params=params) as conn:
         print(f'Database version: {conn.version}')
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * FROM v$version')
+            print(cursor.fetchall())
         conn.close()
 
 
