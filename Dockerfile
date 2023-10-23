@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
 RUN apt-get update && \
-    apt-get install -y wget unzip
+    apt-get install -y wget unzip libaio1
 
 ARG ORACLE_HOME=/oracle
 ARG ORACLE_CLIENT_HOME=${ORACLE_HOME}/instantclient
