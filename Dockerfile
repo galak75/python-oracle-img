@@ -1,7 +1,7 @@
 FROM python:3.8-slim-bullseye
 
 RUN apt-get update && \
-    apt-get install -y wget unzip
+    apt-get install -y wget unzip gcc libaio1
 
 ARG ORACLE_HOME=/oracle
 ARG ORACLE_CLIENT_HOME=${ORACLE_HOME}/instantclient
@@ -19,6 +19,14 @@ ARG ORACLE_CLIENT_HOME=${ORACLE_HOME}/instantclient
 #    mkdir ${ORACLE_HOME} && \
 #    mv /tmp/oracle/instantclient_* ${ORACLE_CLIENT_HOME}
 
+ENV OCI_HOME="${ORACLE_CLIENT_HOME}"
+ENV LD_LIBRARY_PATH="${ORACLE_CLIENT_HOME}"
+ENV OCI_LIB_DIR="${ORACLE_CLIENT_HOME}"
+ENV OCI_INCLUDE_DIR="${ORACLE_CLIENT_HOME}/sdk/include"
+ENV OCI_VERSION=10
+
+ENV PATH="${ORACLE_CLIENT_HOME}:${PATH}"
+
 COPY ./oracleclient /tmp/oracle
 RUN unzip -o /tmp/oracle/instantclient-basic-* -d /tmp/oracle && \
     unzip -o /tmp/oracle/instantclient-sdk-* -d /tmp/oracle && \
@@ -27,12 +35,6 @@ RUN unzip -o /tmp/oracle/instantclient-basic-* -d /tmp/oracle && \
     ln -s ${ORACLE_CLIENT_HOME}/libclntsh.so.11.1 ${ORACLE_CLIENT_HOME}/libclntsh.so && \
     ln -s ${ORACLE_CLIENT_HOME}/libocci.so.11.1 ${ORACLE_CLIENT_HOME}/libocci.so
 
-
-ENV OCI_HOME="${ORACLE_CLIENT_HOME}"
-ENV LD_LIBRARY_PATH="${ORACLE_CLIENT_HOME}"
-ENV OCI_LIB_DIR="${ORACLE_CLIENT_HOME}"
-ENV OCI_INCLUDE_DIR="${ORACLE_CLIENT_HOME}/sdk/include"
-ENV OCI_VERSION=10
 
 RUN pip install --upgrade pip && \
     pip install pipenv
