@@ -11,7 +11,9 @@ def print_db_version(db_config):
         encoding='UTF-8'
     ) as conn:
         print(f'Database version: {conn.version}')
-        conn.close()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * FROM v$version')
+            print(cursor.fetchall())
 
 
 if __name__ == '__main__':
