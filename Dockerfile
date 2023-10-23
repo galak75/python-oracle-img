@@ -22,9 +22,13 @@ ENV PIPENV_VENV_IN_PROJECT=1
 
 WORKDIR /app
 
-ADD main.py Pipfile ./
-
+# install python modules
+ADD Pipfile ./
 RUN pipenv install
+
+# add source files
+ADD main.py ./
+
 
 ENTRYPOINT ["./.venv/bin/python", "main.py"]
 CMD [""]
